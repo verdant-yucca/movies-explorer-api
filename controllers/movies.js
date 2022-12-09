@@ -3,8 +3,9 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const {
-  ERROR_TEXT_BED_REQUEST,
-  ERROR_TEXT_NOT_FOUND_CARDS,
+  ERROR_BED_REQUEST,
+  ERROR_NOT_FOUND,
+  ERROR_FORBIDDEN,
 } = require('../utils/constants');
 
 module.exports.createMovie = (req, res, next) => {
@@ -29,7 +30,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       }
       next(err);
     });
@@ -49,14 +50,14 @@ module.exports.deleteMovie = (req, res, next) => {
           return Movie.findByIdAndRemove(req.params.movieId)
             .then(() => res.send(movie));
         }
-        throw new ForbiddenError('Нельзя удалять чужие фильмы');
+        throw new ForbiddenError(ERROR_FORBIDDEN.message);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_CARDS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message_cards);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       }
       next(err);
     });

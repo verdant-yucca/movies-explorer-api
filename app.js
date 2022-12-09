@@ -1,4 +1,6 @@
 require('dotenv').config();
+
+const { NODE_ENV, MONGO_PROD } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -11,7 +13,7 @@ const router = require('./routes/routes');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+mongoose.connect(NODE_ENV === 'production' ? MONGO_PROD : 'mongodb://localhost:27017/moviesdb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

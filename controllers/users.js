@@ -8,8 +8,9 @@ const ConflictError = require('../errors/ConflictError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
-  ERROR_TEXT_NOT_FOUND_USERS,
-  ERROR_TEXT_BED_REQUEST,
+  ERROR_NOT_FOUND,
+  ERROR_BED_REQUEST,
+  ERROR_CONFLICT,
   secretKey,
 } = require('../utils/constants');
 
@@ -31,9 +32,9 @@ module.exports.createUser = (req, res, next) => {
         }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
-          } else if (err.code === 11000) {
-            next(new ConflictError('Пользователь с данным email уже существует'));
+            next(new BadRequestError(ERROR_BED_REQUEST.message));
+          } else if (err.code === ERROR_CONFLICT.code) {
+            next(new ConflictError(ERROR_CONFLICT.message));
           } else {
             next(err);
           }
@@ -45,7 +46,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
   if ((!email) || (!name)) {
-    throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
+    throw new BadRequestError(ERROR_BED_REQUEST.message);
   }
   User.findByIdAndUpdate(
     req.user._id,
@@ -59,12 +60,12 @@ module.exports.updateUser = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message_users);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -87,7 +88,7 @@ module.exports.getMe = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message_users);
       }
     })
     .catch(next);

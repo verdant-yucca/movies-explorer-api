@@ -1,8 +1,27 @@
-exports.ERROR_CODE_BED_REQUEST = 400;
-exports.ERROR_CODE_NOT_FOUND = 404;
-exports.ERROR_CODE_INTERNAL_SERVER = 500;
-exports.ERROR_TEXT_BED_REQUEST = { message: 'Переданы некорректные данные' };
-exports.ERROR_TEXT_NOT_FOUND_USERS = { message: 'Данный пользователь не существует' };
-exports.ERROR_TEXT_NOT_FOUND_CARDS = { message: 'Данная карточка не существует' };
-exports.ERROR_TEXT_INTERNAL_SERVER = { message: 'Ошибка сервера' };
 exports.secretKey = 'salt-salt-salt';
+
+exports.ERROR_BED_REQUEST = {
+  code: 400,
+  message: 'Переданы некорректные данные',
+};
+exports.ERROR_UNUTHORIZES = {
+  code: 401,
+  message: 'Неправильные почта или пароль',
+};
+exports.ERROR_FORBIDDEN = {
+  code: 403,
+  message: 'Нельзя удалять чужие фильмы',
+};
+exports.ERROR_NOT_FOUND = {
+  code: 404,
+  message_users: 'Данный пользователь не существует',
+  message_cards: 'Данная карточка не существует',
+};
+exports.ERROR_INTERNAL_SERVER = {
+  code: 500,
+  message: 'Ошибка сервера',
+};
+exports.ERROR_CONFLICT = {
+  code: 11000,
+  message: 'Пользователь с данным email уже существует',
+};
