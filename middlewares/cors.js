@@ -1,7 +1,8 @@
 const allowedCors = [
-  'https://verdant-yucca-front.nomoredomains.icu',
-  'http://verdant-yucca-front.nomoredomains.icu',
+  'https://movies-cohort47.nomoredomains.monster',
+  'http://movies-cohort47.nomoredomains.monster',
   'localhost:3000',
+  'http://localhost:3000',
 ];
 
 const cors = (req, res, next) => {
